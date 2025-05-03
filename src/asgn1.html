@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Change a point color</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <button type = "button" id = "erase"> clear canvas </button>
+    <p>
+ 
+    Brush Shape:
+    <p>
+    <button type = "button" id = "circle"> circle </button>
+    <button type = "button" id = "square"> square </button>
+    <button type = "button" id = "triangle"> triangle </button>
+    <p>
+
+    Brush Opacity (Awesomeness):
+    <p>
+    0 <input type = "range" min = "0" max = "100" value = "100" class = "slider" id = "opacitySlide"> 100
+    <p>
+ 
+    Brush Color:
+    <p>
+    Red <input type = "range" min = "0" max = "100" value = "100" class = "slider" id = "redSlide">
+    Green <input type = "range" min = "0" max = "100" value = "100" class = "slider" id = "greenSlide">
+    Blue <input type = "range" min = "0" max = "100" value = "100" class = "slider" id = "blueSlide">
+    <p>
+ 
+    Brush Size <input type = "range" min = "5" max = "40" value = "0" class = "slider" id = "sizeSlide">
+    Segment Count for Circles <input type = "range" min = "4" max = "12" value = "12" class = "slider" id = "sCount">
+    <p></p>
+    <img src="goosecat.png" width="300" height="300" alt="Draw a Picture">
+ 
+    <script src="../lib/webgl-utils.js"></script>
+    <script src="../lib/webgl-debug.js"></script>
+    <script src="../lib/cuon-utils.js"></script>
+    <script src="asgn1.js"></script>
+    <script src="point.js"></script>
+    <script src="circle.js"></script>
+    <script src="triangle.js"></script>
+  </body>
+</html>
