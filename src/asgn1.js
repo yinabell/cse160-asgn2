@@ -358,7 +358,9 @@ function renderAllShapes(){
     backPlate.color = [0.412, 0.549, 0.510, 1.0];
     backPlate.matrix.translate(-0.5, -0.4, 0.5);  
     backPlate.matrix.scale(0.5, 0.5, 0.1);        
-    backPlate.render(); 
+    backPlate.render();  
+
+    
 
     // face / eye
     // White eyeball (base)
@@ -381,28 +383,30 @@ function renderAllShapes(){
     pupil.color = [0.545, 0.063, 0.059, 1.0]; // red 
     pupil.matrix.translate(-0.3, -0.2, -0.12);  // Slightly in front of iris
     pupil.matrix.scale(0.1, 0.1, 0.01); 
-    pupil.render();
+    pupil.render(); 
+
+
 
     // Guardian spikes (orange)
     // Top spike DONE
     var topSpike = new Cube();
-    topSpike.color = [1.0, 0.647, 0.0, 1.0]; // orange
+    topSpike.color = [1.0, 0.647, 0.0, 1.0]; 
     topSpike.matrix.translate(-0.3, 0.1, 0.0);
-    topSpike.matrix.rotate(-45, 1.0, 0.0, 0.0); // Rotate 45 degrees around the X-axis (forward angle)
+    topSpike.matrix.rotate(-45, 1.0, 0.0, 0.0); 
     topSpike.matrix.scale(0.1, 0.3, 0.1);
     topSpike.render();
 
     // Right spike 2 bottom DONE
     var rightSpike2 = new Cube();
-    rightSpike2.color = [0.839, 0.373, 0.157, 1.0]; // slightly lighter orange
+    rightSpike2.color = [0.839, 0.373, 0.157, 1.0]; 
     rightSpike2.matrix.translate(-0.1, -0.4, .2);
-    rightSpike2.matrix.rotate(45, 0, 0, -1.0); // Rotate 45 degrees downward around the X-axis
+    rightSpike2.matrix.rotate(45, 0, 0, -1.0); 
     rightSpike2.matrix.scale(0.3, 0.1, 0.1);
     rightSpike2.render();
 
     // Right spike 1 top DONE
     var rightSpike3 = new Cube();
-    rightSpike3.color = [1.0, 0.647, 0.0, 1.0]; // orange
+    rightSpike3.color = [1.0, 0.647, 0.0, 1.0]; 
     rightSpike3.matrix.translate(0.04, 0.05, 0.2);
     rightSpike3.matrix.rotate(45, 0.0, 0.0, 1.0);
     rightSpike3.matrix.scale(0.4, 0.1, 0.1);
@@ -410,46 +414,43 @@ function renderAllShapes(){
 
     // Right spike 1 right DONE
     var rightSpike4 = new Cube();
-    rightSpike4.color = [1.0, 0.549, 0.0, 1.0]; // orange
+    rightSpike4.color = [1.0, 0.549, 0.0, 1.0]; 
     rightSpike4.matrix.translate(0.1, -0.2, 0.5);
     rightSpike4.matrix.rotate(45, 0, -1, 0); 
     rightSpike4.matrix.scale(0.3, 0.1, 0.1);
     rightSpike4.render(); 
 
-    // below is correct 
+    // below is correct DONE
     var rightSpike1 = new Cube();
-    rightSpike1.color = [1.0, 0.498, 0.196, 1.0]; // orange
+    rightSpike1.color = [1.0, 0.498, 0.196, 1.0]; 
     rightSpike1.matrix.rotate(45, 0, 1, 0); 
     rightSpike1.matrix.translate(-0.1, -0.2, 0.0);
     rightSpike1.matrix.scale(0.3, 0.1, 0.1);
     rightSpike1.render();
 
-    // Left spike 4 (right) - HERE
+    // Left spike 4 (right) DONE
     var leftSpike1 = new Cube();
-    //leftSpike1.color = [0.61, 0.30, 0.11, 1.0]; // Darker orange 
-    leftSpike1.matrix.rotate(45, 0, 1, 0); 
-    leftSpike1.matrix.translate(-.1, -0.2, 0.0);
-    leftSpike1.matrix.scale(0.3, 0.1, 0.1);
+    leftSpike1.color = [0.61, 0.30, 0.11, 1.0]; 
+    leftSpike1.matrix.translate(-0.6, -0.2, -0.1);  
+    leftSpike1.matrix.rotate(-45, 0, 1, 0);
+    leftSpike1.matrix.scale(0.5, 0.1, 0.1);         
     leftSpike1.render(); 
 
     // Left spike 4 (right) - darker DONE
     var leftSpike4 = new Cube();
-    //leftSpike4.color = [0.61, 0.30, 0.11, 1.0]; // Darker orange
+    leftSpike4.color = [0.61, 0.30, 0.11, 1.0]; // Darker orange
     leftSpike4.matrix.translate(-0.75, -0.2, 0.7);
     leftSpike4.matrix.rotate(45, 0, 1, 0); 
     leftSpike4.matrix.scale(0.3, 0.1, 0.1);
     leftSpike4.render(); 
-     
     
     // Left spike 2 (bottom) - darker red-orange DONE 
     var leftSpike2 = new Cube();
     leftSpike2.color = [0.48, 0.24, 0.11, 1.0];
-    //leftSpike2.color = [0.48, 0.24, 0.11, 1.0]; // Darker red-orange
     leftSpike2.matrix.translate(-0.6, -0.6, 0.2);
     leftSpike2.matrix.rotate(45, 0, 0, 1);
     leftSpike2.matrix.scale(0.25, 0.1, 0.1);
     leftSpike2.render(); 
-
 
     // Left spike 3 (top) - darker DONE
     var leftSpike3 = new Cube();
@@ -458,40 +459,48 @@ function renderAllShapes(){
     leftSpike3.matrix.rotate(-45, 0, 0, 1); 
     leftSpike3.matrix.scale(0.3, 0.1, 0.1);
     leftSpike3.render();
+ 
 
-    /* 
+    /*
+    // BACK PLATE REFERENCE
+    var backPlate = new Cube();
+    backPlate.color = [0.412, 0.549, 0.510, 1.0];
+    backPlate.matrix.translate(-0.5, -0.4, 0.5);  
+    backPlate.matrix.scale(0.5, 0.5, 0.1);        
+    backPlate.render();  
+    */ 
 
+    
     // Guardian tail
-    // Tail base
+    // Tail base (first segment) DONE 
     var tailBase = new Cube();
-    tailBase.color = [0.486, 0.647, 0.604, 1.0]; // match body plates
-    tailBase.matrix.translate(-0.5, -0.65, 0.0);
-    tailBase.matrix.scale(0.2, 0.15, 0.2);
+    tailBase.color = [0.486, 0.647, 0.604, 1.0]; // Match body plates
+    //tailBase.color = [1, 0, 0, 1] 
+    tailBase.matrix.translate(-0.4, -0.3, 0.6); // Position right behind the back plate
+    tailBase.matrix.scale(0.3, 0.25, 0.25);     // Larger first segment
     tailBase.render();
 
-    // Tail middle
+    // Tail middle (second segment) DONE
     var tailMiddle = new Cube();
-    tailMiddle.color = [0.412, 0.549, 0.510, 1.0]; // slightly darker
-    tailMiddle.matrix.translate(-0.5, -0.8, 0.0);
-    tailMiddle.matrix.scale(0.15, 0.15, 0.15);
+    tailMiddle.color = [0.412, 0.549, 0.510, 1.0]; // Slightly darker 
+    //tailMiddle.color = [1, 0, 0, 1]; 
+    tailMiddle.matrix.translate(-0.375, -0.275, 0.85); // Connect to first segment
+    tailMiddle.matrix.scale(0.25, 0.2, 0.25);     // Larger middle segment
     tailMiddle.render();
 
-    // Tail tip (with orange spike)
+    // Tail tip (third segment)
     var tailTip = new Cube();
-    tailTip.color = [0.365, 0.490, 0.451, 1.0]; // even darker
-    tailTip.matrix.translate(-0.5, -0.95, 0.0);
-    tailTip.matrix.scale(0.1, 0.1, 0.1);
+    tailTip.color = [0.365, 0.490, 0.451, 1.0]; // Even darker
+    tailTip.matrix.translate(-0.35, -0.25, 1.1); // Connect to second segment
+    tailTip.matrix.scale(0.2, 0.15, 0.2);       // Larger tip segment
     tailTip.render();
 
     // Tail spike (orange)
     var tailSpike = new Cube();
-    tailSpike.color = [1.0, 0.5, 0.0, 1.0]; // orange
-    tailSpike.matrix.translate(-0.5, -1.1, 0.0);
-    tailSpike.matrix.scale(0.05, 0.15, 0.05);
+    tailSpike.color = [1.0, 0.5, 0.0, 1.0]; // Orange
+    tailSpike.matrix.translate(-0.35, -0.25, 1.3); // Connect to third segment
+    tailSpike.matrix.scale(0.1, 0.1, 0.2);      // Larger spike
     tailSpike.render();
-
-    
-    */
     
     // left arm yellow
     //var leftArm = new Cube(); 
