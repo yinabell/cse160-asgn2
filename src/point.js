@@ -1,3 +1,4 @@
+
 class Point{
 
     constructor(){
@@ -19,7 +20,8 @@ class Point{
         gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], opacity);
         gl.uniform1f(u_Size, size);
 
-        // Draw
+        // draw
         gl.drawArrays(gl.POINTS, 0, 1);
     }
 }
+ 
