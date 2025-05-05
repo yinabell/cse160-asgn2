@@ -38,6 +38,14 @@ let g_magentaAngle = 0;
 let g_yellowAnimation = false; 
 let g_magentaAnimation = false; 
 
+// FOR THE GUARDIAN : 
+let g_mouseX = 0; 
+let g_mouseY = 0; 
+let g_lookAtMouse = true; 
+
+let g_tailAnimation = false; 
+let g_tailAngle = 0; 
+
 function setupWebGL(){
     // Retrieve <canvas> element
   canvas = document.getElementById('webgl', {preserveDrawingBuffer: true});
@@ -187,6 +195,27 @@ function addActionsforHtmlUI(){
         g_magentaAnimation = true; 
         renderAllShapes(); 
         //console.log("is this working now here");
+    }; 
+
+    // cursor movement for eyeball tracking
+    document.getElementById('eyeTrackingToggle').onclick = function(){ 
+        g_lookAtMouse = !g_lookAtMouse; 
+        if (g_lookAtMouse){ 
+            this.textContent = "Eye Tracking: ON"; 
+        } else{ 
+            this.textContent = "Eye Tracking: OFF"; 
+        }
+        renderAllShapes(); 
+    }; 
+
+    // tail animation 
+    document.getElementById('animationTailOffButton').onclick = function() {
+        g_tailAnimation = false;
+        renderAllShapes();
+    };
+    document.getElementById('animationTailOnButton').onclick = function() {
+        g_tailAnimation = true;
+        renderAllShapes();
     };
     
 
@@ -205,7 +234,21 @@ function main() {
     if(ev.buttons == 1){
         click(ev);
     }
-    let [x,y] = convertCoordinatesEventToGL(ev);
+    let [x,y] = convertCoordinatesEventToGL(ev); 
+
+    g_mouseX = x; 
+    g_mouseY = y; 
+
+  }
+
+  // let cursor track outside 
+  document.onmousemove = function(ev){ 
+    
+    // convert screen coords to relative position 
+    let rect = canvas.getBoundingClientRect(); 
+    let canvasCenterX = rect.left + canvas.width/2; 
+    let canvasCenterY = rect.top + canvas.height/2; 
+
   }
 
   // Specify the color for clearing <canvas>
@@ -226,7 +269,10 @@ function updateAnimationAngles(){
     if (g_magentaAnimation){ 
         g_magentaAngle = (45 * Math.sin(3 * g_seconds))
     }
-}
+    if (g_tailAnimation){
+        g_tailAngle = (30 * Math.sin(2 * g_seconds)); 
+    }
+} 
 
 var g_startTime = performance.now()/1000.0; 
 var g_seconds = performance.now()/1000.0 - g_startTime; 
@@ -360,7 +406,8 @@ function renderAllShapes(){
     backPlate.matrix.scale(0.5, 0.5, 0.1);        
     backPlate.render();  
 
-    
+
+    // HERE 
 
     // face / eye
     // White eyeball (base)
@@ -378,14 +425,36 @@ function renderAllShapes(){
     iris.matrix.scale(0.4, 0.03, 0.01); 
     iris.render();
 
-    // Pupil
-    var pupil = new Cube();
-    pupil.color = [0.545, 0.063, 0.059, 1.0]; // red 
-    pupil.matrix.translate(-0.3, -0.2, -0.12);  // Slightly in front of iris
+    // Pupil 
+    //var pupil = new Cube();
+    //pupil.color = [0.545, 0.063, 0.059, 1.0]; // red 
+    //pupil.matrix.translate(-0.3, -0.2, -0.12);  // Slightly in front of iris
+    //pupil.matrix.scale(0.1, 0.1, 0.01); 
+    //pupil.render(); 
+
+    // pupil with eye tracking 
+    var pupil = new Cube(); 
+    pupil.color = [0.545, 0.063, 0.059, 1.0]; // red
+
+    // base position
+    let pupilX = -0.3; 
+    let pupilY = -0.2; 
+    const pupilZ = -0.12; 
+    
+    // adjust pupil pos based on mouse 
+    if (g_lookAtMouse){ 
+        let offsetX = g_mouseX * 0.05; // scale down movement
+        let offsetY = g_mouseY * 0.03; 
+
+        // apply offsets with constraints to keep pupil in eyeball 
+        pupilX = Math.max(-0.35, Math.min(-0.25, -0.3 + offsetX)); 
+        pupilY = Math.max(-0.23, Math.min(-0.17, -0.2 + offsetY)); 
+    }
+
+    pupil.matrix.translate(pupilX, pupilY, pupilZ);
     pupil.matrix.scale(0.1, 0.1, 0.01); 
-    pupil.render(); 
-
-
+    pupil.render();  
+    
 
     // Guardian spikes (orange)
     // Top spike DONE
@@ -476,31 +545,45 @@ function renderAllShapes(){
     var tailBase = new Cube();
     tailBase.color = [0.486, 0.647, 0.604, 1.0]; // Match body plates
     //tailBase.color = [1, 0, 0, 1] 
-    tailBase.matrix.translate(-0.4, -0.3, 0.6); // Position right behind the back plate
-    tailBase.matrix.scale(0.3, 0.25, 0.25);     // Larger first segment
-    tailBase.render();
+    tailBase.matrix.translate(-0.4, -0.3, 0.6); // Position right behind the back plate 
+
+    tailBase.matrix.rotate(g_tailAngle, 0, 1, 0); 
+    var tailCoordinatesMat = new Matrix4(tailBase.matrix); 
+
+    tailBase.matrix.scale(0.3, 0.25, 0.25);     // Larger first segment 
+    tailBase.render(); 
 
     // Tail middle (second segment) DONE
     var tailMiddle = new Cube();
     tailMiddle.color = [0.412, 0.549, 0.510, 1.0]; // Slightly darker 
-    //tailMiddle.color = [1, 0, 0, 1]; 
+
+    tailMiddle.matrix = tailCoordinatesMat; 
+
     tailMiddle.matrix.translate(-0.375, -0.275, 0.85); // Connect to first segment
     tailMiddle.matrix.scale(0.25, 0.2, 0.25);     // Larger middle segment
     tailMiddle.render();
 
     // Tail tip (third segment)
     var tailTip = new Cube();
-    tailTip.color = [0.365, 0.490, 0.451, 1.0]; // Even darker
+    tailTip.color = [0.365, 0.490, 0.451, 1.0]; // Even darker 
+
+    tailTip.matrix = new Matrix4(tailCoordinatesMat); 
+
     tailTip.matrix.translate(-0.35, -0.25, 1.1); // Connect to second segment
     tailTip.matrix.scale(0.2, 0.15, 0.2);       // Larger tip segment
     tailTip.render();
 
     // Tail spike (orange)
     var tailSpike = new Cube();
-    tailSpike.color = [1.0, 0.5, 0.0, 1.0]; // Orange
+    tailSpike.color = [1.0, 0.5, 0.0, 1.0]; // Orange 
+
+    tailSpike.matrix = new Matrix4(tailCoordinatesMat); 
+    
     tailSpike.matrix.translate(-0.35, -0.25, 1.3); // Connect to third segment
     tailSpike.matrix.scale(0.1, 0.1, 0.2);      // Larger spike
-    tailSpike.render();
+    tailSpike.render(); 
+
+
     
     // left arm yellow
     //var leftArm = new Cube(); 
@@ -537,15 +620,3 @@ function renderAllShapes(){
     */
 
 }
-
-/*
-// set text of HTML element 
-function sendTextToHTML(){ 
-    var htmlElm = document.getElementById(htmlElm); 
-    if (!htmlElm){ 
-        console.log("Failed to get " + htmlID + " from HTML"); 
-        return; 
-    }
-    htmlElm.innerHTML = text; 
-}
-*/ 
