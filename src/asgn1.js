@@ -33,10 +33,7 @@ let g_selectedType = 0;
 let g_selectedSegments = 12;
 let g_Opacity = 100;
 let g_globalAngle = 0; 
-let g_yellowAngle = 0; 
-let g_magentaAngle = 0; 
-let g_yellowAnimation = false; 
-let g_magentaAnimation = false; 
+
 
 // FOR THE GUARDIAN : 
 let g_mouseX = 0; 
@@ -81,14 +78,6 @@ function connectVariablesToGLSL(){
         console.log('Failed to get the storage location of u_FragColor');
         return;
     }
-    // Get the storage location of u_Size
-    /*
-    u_Size = gl.getUniformLocation(gl.program, 'u_Size');
-    if (!u_Size) {
-        console.log('Failed to get the storage location of u_Size');
-        return;
-    }
-    */
 
     // Get the storage location of u_ModelMatrix
     u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix'); 
@@ -116,86 +105,14 @@ function addActionsforHtmlUI(){
         g_shapesList = [];
         renderAllShapes();
     };
-    // Circle button
-    document.getElementById('circle').onclick = function(){
-        g_selectedType = 2;
-    };
-    // Square button
-    document.getElementById('square').onclick = function(){
-        g_selectedType = 0;
-    };
-    // Triangle button
-    document.getElementById('triangle').onclick = function(){
-        g_selectedType = 1;
-    };
-    // Red color slider
-    document.getElementById('redSlide').addEventListener('mouseup', function(){
-        g_selectedColor[0] = this.value/100;
-    });
-    // Green color slider
-    document.getElementById('greenSlide').addEventListener('mouseup', function(){
-        g_selectedColor[1] = this.value/100;
-    });
-    // Blue color slider
-    document.getElementById('blueSlide').addEventListener('mouseup', function(){
-        g_selectedColor[2] = this.value/100;
-    });
-    // Brush size slider
-    document.getElementById('sizeSlide').addEventListener('mouseup', function(){
-        g_selectedSize = this.value;
-    });
-    // Circles
-    document.getElementById('sCount').addEventListener('mouseup', function(){
-        g_selectedSegments = this.value;
-        //console.log("is this working now here");
-    });
-    document.getElementById('opacitySlide').addEventListener('mouseup', function(){
-        g_Opacity = this.value;
-        //console.log("is this working now here");
-    });
+
     document.getElementById('angleSlide').addEventListener('mousemove', function(){
         g_globalAngle = this.value;
         renderAllShapes(); 
         //console.log("is this working now here");
     });
 
-    // yellow slider 
-    document.getElementById('yellowSlide').addEventListener('mousemove', function(){
-        g_yellowAngle = this.value;
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    });
 
-    // magenta slider
-    document.getElementById('magentaSlide').addEventListener('mousemove', function(){
-        g_magentaAngle = this.value;
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    });
-
-    // on / off buttons YELLOW
-    document.getElementById('animationYellowOffButton').onclick = function() {
-        g_yellowAnimation = false; 
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    };
-    document.getElementById('animationYellowOnButton').onclick = function() {
-        g_yellowAnimation = true; 
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    };
-
-    // on / off buttons MAGENTA
-    document.getElementById('animationMagentaOffButton').onclick = function() {
-        g_magentaAnimation = false; 
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    };
-    document.getElementById('animationMagentaOnButton').onclick = function() {
-        g_magentaAnimation = true; 
-        renderAllShapes(); 
-        //console.log("is this working now here");
-    }; 
 
     // cursor movement for eyeball tracking
     document.getElementById('eyeTrackingToggle').onclick = function(){ 
@@ -218,7 +135,6 @@ function addActionsforHtmlUI(){
         renderAllShapes();
     };
     
-
 }
 
 function main() {
@@ -263,12 +179,7 @@ function main() {
 } 
 
 function updateAnimationAngles(){ 
-    if (g_yellowAnimation){ 
-        g_yellowAngle = (45 * Math.sin(g_seconds)); 
-    }
-    if (g_magentaAnimation){ 
-        g_magentaAngle = (45 * Math.sin(3 * g_seconds))
-    }
+
     if (g_tailAnimation){
         g_tailAngle = (30 * Math.sin(2 * g_seconds)); 
     }
@@ -333,12 +244,6 @@ function convertCoordinatesEventToGL(ev){
 
 function renderAllShapes(){
 
-    /*
-    var startTime = performance.now(); 
-    var duration = performance.now() - startTime; 
-    sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration)); 
-    */ 
-
     var globalRotMat = new Matrix4().rotate(g_globalAngle, 0.0, 1.0, 0.0); 
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements); 
 
@@ -351,10 +256,6 @@ function renderAllShapes(){
     for(var i=0; i<len; i++) {
         g_shapesList[i].render();
     }
-
-    // triangle 
-    //gl.uniform4f(u_FragColor, 1.0, 1.0, 1.0, 1.0); 
-    //drawTriangle3D([-1.0, 0.0, 0.0,  -0.5, -1.0, 0.0,  0.0, 0.0, 0.0]);  
     
     // guardian body 
     // red core 
@@ -424,13 +325,6 @@ function renderAllShapes(){
     iris.matrix.translate(-0.45, -0.1, -0.11); // Slightly in front of eyeball
     iris.matrix.scale(0.4, 0.03, 0.01); 
     iris.render();
-
-    // Pupil 
-    //var pupil = new Cube();
-    //pupil.color = [0.545, 0.063, 0.059, 1.0]; // red 
-    //pupil.matrix.translate(-0.3, -0.2, -0.12);  // Slightly in front of iris
-    //pupil.matrix.scale(0.1, 0.1, 0.01); 
-    //pupil.render(); 
 
     // pupil with eye tracking 
     var pupil = new Cube(); 
@@ -531,15 +425,6 @@ function renderAllShapes(){
  
 
     /*
-    // BACK PLATE REFERENCE
-    var backPlate = new Cube();
-    backPlate.color = [0.412, 0.549, 0.510, 1.0];
-    backPlate.matrix.translate(-0.5, -0.4, 0.5);  
-    backPlate.matrix.scale(0.5, 0.5, 0.1);        
-    backPlate.render();  
-    */ 
-
-    
     // Guardian tail
     // Tail base (first segment) DONE 
     var tailBase = new Cube();
@@ -582,41 +467,65 @@ function renderAllShapes(){
     tailSpike.matrix.translate(-0.35, -0.25, 1.3); // Connect to third segment
     tailSpike.matrix.scale(0.1, 0.1, 0.2);      // Larger spike
     tailSpike.render(); 
-
-
-    
-    // left arm yellow
-    //var leftArm = new Cube(); 
-    //leftArm.color = [1, 1, 0, 1]; 
-    //leftArm.matrix.setTranslate(0.0, -0.5, 0.0); 
-    //leftArm.matrix.rotate(-5, 1, 0, 0); 
-    /* 
-
-    leftArm.matrix.rotate(-g_yellowAngle, 0, 0, 1); 
-
-    if (g_yellowAnimation){ 
-        leftArm.matrix.rotate(45 * Math.sin(g_seconds), 0, 0, 1);
-    } else { 
-        leftArm.matrix.rotate(-g_yellowAngle, 0, 0, 1);
-
-    }
-
-
-    var yellowCoordinatesMat = new Matrix4(leftArm.matrix); 
-    leftArm.matrix.scale(0.25, 0.7, 0.5); 
-    leftArm.matrix.translate(-0.5, 0, 0); 
-    leftArm.render(); 
-
-    // purple cube 
-    var box = new Cube(); 
-    box.color = [1.0, 0.0, 1.0, 1.0]; 
-    box.matrix = yellowCoordinatesMat; 
-    box.matrix.translate(0, 0.65, 0); 
-    box.matrix.rotate(g_magentaAngle, 0, 0, 1); 
-    box.matrix.scale(0.3, 0.3, 0.3); 
-    box.matrix.translate(-0.5, 0, -0.001); 
-    box.render(); 
-
     */
+
+    // Tail base (first segment)
+    var tailBase = new Cube();
+    tailBase.color = [0.486, 0.647, 0.604, 1.0]; // Match body plates
+    
+    // Position the entire tail at the correct starting point
+    tailBase.matrix.translate(-0.4, -0.3, 0.6); // Position right behind the back plate 
+    
+    // Apply the animation rotation to the entire tail
+    tailBase.matrix.rotate(g_tailAngle, 0, 1, 0); 
+    
+    // Scale the first segment
+    tailBase.matrix.scale(0.3, 0.25, 0.25);     
+    tailBase.render(); 
+
+    // Tail middle (second segment)
+    var tailMiddle = new Cube();
+    tailMiddle.color = [0.412, 0.549, 0.510, 1.0]; // Slightly darker 
+    
+    // Start with the same position and rotation as tailBase
+    tailMiddle.matrix.translate(-0.4, -0.3, 0.6);
+    tailMiddle.matrix.rotate(g_tailAngle, 0, 1, 0);
+    
+    // Then move it to connect with the first segment (in the rotated coordinate system)
+    tailMiddle.matrix.translate(0, 0, 0.25); // Move along the z-axis in the rotated space
+    
+    // Scale the middle segment
+    tailMiddle.matrix.scale(0.25, 0.2, 0.25);
+    tailMiddle.render();
+
+    // Tail tip (third segment)
+    var tailTip = new Cube();
+    tailTip.color = [0.365, 0.490, 0.451, 1.0]; // Even darker 
+    
+    // Start with the same position and rotation as tailBase
+    tailTip.matrix.translate(-0.4, -0.3, 0.6);
+    tailTip.matrix.rotate(g_tailAngle, 0, 1, 0);
+    
+    // Then move it to connect with the second segment (in the rotated coordinate system)
+    tailTip.matrix.translate(0, 0, 0.5); // Move further along the z-axis
+    
+    // Scale the tip segment
+    tailTip.matrix.scale(0.2, 0.15, 0.2);
+    tailTip.render();
+
+    // Tail spike (orange)
+    var tailSpike = new Cube();
+    tailSpike.color = [1.0, 0.5, 0.0, 1.0]; // Orange 
+    
+    // Start with the same position and rotation as tailBase
+    tailSpike.matrix.translate(-0.4, -0.3, 0.6);
+    tailSpike.matrix.rotate(g_tailAngle, 0, 1, 0);
+    
+    // Then move it to connect with the tip segment (in the rotated coordinate system)
+    tailSpike.matrix.translate(0, 0, 0.7); // Move even further along the z-axis
+    
+    // Scale the spike
+    tailSpike.matrix.scale(0.1, 0.1, 0.2);
+    tailSpike.render();
 
 }
