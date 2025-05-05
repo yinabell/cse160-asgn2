@@ -42,6 +42,7 @@ let g_lookAtMouse = true;
 
 let g_tailAnimation = false; 
 let g_tailAngle = 0; 
+let g_tailSlider = 0; 
 
 function setupWebGL(){
     // Retrieve <canvas> element
@@ -106,12 +107,30 @@ function addActionsforHtmlUI(){
         renderAllShapes();
     };
 
+    // camera angle slider
     document.getElementById('angleSlide').addEventListener('mousemove', function(){
         g_globalAngle = this.value;
+
+        /*
+        if (!g_tailAnimation){ 
+            g_tailAngle = g_globalAngle; 
+        }
+        */ 
+
         renderAllShapes(); 
         //console.log("is this working now here");
     });
 
+    // tail slider 
+    document.getElementById('tailSlide').addEventListener('mousemove', function(){
+        g_tailSlider = this.value;
+        
+        // Only update the tail angle if animation is OFF
+        if (!g_tailAnimation) {
+            g_tailAngle = g_tailSlider;
+            renderAllShapes();
+        }
+    });
 
 
     // cursor movement for eyeball tracking
@@ -128,6 +147,8 @@ function addActionsforHtmlUI(){
     // tail animation 
     document.getElementById('animationTailOffButton').onclick = function() {
         g_tailAnimation = false;
+
+        g_tailAngle = g_tailSlider; 
         renderAllShapes();
     };
     document.getElementById('animationTailOnButton').onclick = function() {
@@ -182,7 +203,8 @@ function updateAnimationAngles(){
 
     if (g_tailAnimation){
         g_tailAngle = (30 * Math.sin(2 * g_seconds)); 
-    }
+    } 
+    
 } 
 
 var g_startTime = performance.now()/1000.0; 
