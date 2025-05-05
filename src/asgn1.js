@@ -349,27 +349,25 @@ function renderAllShapes(){
     backPlate.render();  
 
 
-    // HERE 
-
     // face / eye
     // White eyeball (base)
     var eyeball = new Cube();
-    eyeball.color = [0.827, 0.824, 0.788, 1.0]; // white
+    eyeball.color = [0.827, 0.824, 0.788, 1.0]; 
 
-    eyeball.matrix.translate(-0.4, -0.28, -0.11); // Front plate is at -0.1, so -0.13 floats it
+    eyeball.matrix.translate(-0.4, -0.28, -0.11); 
     eyeball.matrix.scale(0.3, 0.18, 0.01); 
     eyeball.render();
 
     // Iris
     var iris = new Cube();
-    iris.color = [0.188, 0.251, 0.231, 1.0]; // Teal
-    iris.matrix.translate(-0.45, -0.1, -0.11); // Slightly in front of eyeball
+    iris.color = [0.188, 0.251, 0.231, 1.0]; 
+    iris.matrix.translate(-0.45, -0.1, -0.11); 
     iris.matrix.scale(0.4, 0.03, 0.01); 
     iris.render();
 
     // pupil with eye tracking 
     var pupil = new Cube(); 
-    pupil.color = [0.545, 0.063, 0.059, 1.0]; // red
+    pupil.color = [0.545, 0.063, 0.059, 1.0]; 
 
     // base position
     let pupilX = -0.3; 
@@ -378,7 +376,7 @@ function renderAllShapes(){
     
     // adjust pupil pos based on mouse 
     if (g_lookAtMouse){ 
-        let offsetX = g_mouseX * 0.05; // scale down movement
+        let offsetX = g_mouseX * 0.05; 
         let offsetY = g_mouseY * 0.03; 
 
         // apply offsets with constraints to keep pupil in eyeball 
@@ -388,19 +386,10 @@ function renderAllShapes(){
 
     pupil.matrix.translate(pupilX, pupilY, pupilZ);
     pupil.matrix.scale(0.1, 0.1, 0.01); 
-    pupil.render();  
+    pupil.render(); 
 
-
-
-    // FOR SPIKES ANIMATION 
-    //let g_spikeMove = false;   g_spikeAnimationActive
-    //let g_spikeBegin = 0;      g_spikeAnimationStartTime
-    //let g_spikeDelay = 0.5;    g_spikeAnimationDuration
-    //let g_spikeValue = 0;      g_spikeAnimationValue 
-    
     // calculate animation offset of spike 
     let spikeOffset = g_spikeMove ? g_spikeValue * 10 : 0; 
-    
 
     // Guardian spikes (orange)
     // Top spike DONE
@@ -478,8 +467,6 @@ function renderAllShapes(){
     rightSpike1.matrix.scale(0.3, 0.1, 0.1);
     rightSpike1.render();
 
-
-
     // Left spike 4 (right) DONE
     var leftSpike1 = new Cube();
     leftSpike1.color = [0.61, 0.30, 0.11, 1.0]; 
@@ -494,8 +481,6 @@ function renderAllShapes(){
     //leftSpike1.matrix.rotate(-45, 0, 1, 0);
     leftSpike1.matrix.scale(0.5, 0.1, 0.1);         
     leftSpike1.render(); 
-
-
 
     // Left spike 4 (right) - darker DONE
     var leftSpike4 = new Cube();
@@ -542,7 +527,48 @@ function renderAllShapes(){
     leftSpike3.matrix.scale(0.3, 0.1, 0.1);
     leftSpike3.render(); 
 
-    // adding last 3 spikes 
+    var topSpike1 = new Cube();
+    topSpike1.color = [0.780, 0.412, 0.200, 1.0]; 
+    topSpike1.matrix.translate(-0.3, 0.1, 0.4); 
+
+    if (g_spikeMove) {
+        topSpike1.matrix.rotate(45 + spikeOffset * 0.75, 1, 0, 0); 
+    } else {
+        topSpike1.matrix.rotate(45, 1, 0, 0); 
+    }
+
+    //topSpike1.matrix.rotate(45, 1, 0, 0); 
+    topSpike1.matrix.scale(0.1, 0.3, 0.1);
+    topSpike1.render();
+
+    var topSpike2 = new Cube();
+    topSpike2.color = [0.549, 0.271, 0.098, 1.0]; 
+    topSpike2.matrix.translate(-0.3, -0.6, 0.6); 
+
+    if (g_spikeMove) {
+        topSpike2.matrix.rotate(-45 - spikeOffset * 0.65, 1, 0, 0); 
+    } else {
+        topSpike2.matrix.rotate(-45, 1, 0, 0); 
+    }
+
+    //topSpike2.matrix.rotate(-45, 1, 0, 0); 
+    topSpike2.matrix.scale(0.1, 0.5, 0.1);
+    topSpike2.render();
+
+
+    var topSpike3 = new Cube();
+    topSpike3.color = [0.898, 0.447, 0.176, 1.0];
+    topSpike3.matrix.translate(-0.3, -0.6, -.2); 
+
+    if (g_spikeMove) {
+        topSpike3.matrix.rotate(45 - spikeOffset * 0.85, 1, 0, 0); 
+    } else {
+        topSpike3.matrix.rotate(45, 1, 0, 0); 
+    }
+    
+    //topSpike3.matrix.rotate(45, 1, 0, 0); 
+    topSpike3.matrix.scale(0.1, 0.3, 0.1);
+    topSpike3.render();
 
 
     // Tail base (first segment)
